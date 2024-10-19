@@ -106,3 +106,5 @@ DerivedData/
 # App Signing
 *.mobileprovision
 *.provisionprofile
+*.pbxproj
+*.xcworkspacedata
