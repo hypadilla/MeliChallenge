@@ -12,4 +12,8 @@ struct Endpoints {
         let encodedQuery = query.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed) ?? ""
         return "sites/\(AppConstants.siteID)/search?q=\(encodedQuery)&offset=\(offset)&limit=\(limit)"
     }
+    
+    static func getProduct(productItemId: String) -> String {
+        return "items/\(productItemId)"
+    }
 }

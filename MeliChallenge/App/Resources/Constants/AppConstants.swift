@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import UIKit
 
 struct AppConstants {
     static let baseURL = "https://api.mercadolibre.com/"
@@ -20,4 +21,5 @@ struct AppConstants {
     static let opacityContainerSpinner: CGFloat = 0.3
     static let cornerRadiusSearchBar: CGFloat = 18.0
     static let itemsPerPage = 50
+    static let widthScreen = UIScreen.main.bounds.width
 }

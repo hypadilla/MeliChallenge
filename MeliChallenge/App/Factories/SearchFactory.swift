@@ -29,7 +29,7 @@ struct SearchFactoryImp: SearchFactory {
     }
     
     func makeCoordinatorProductList(navigation: UINavigationController, productList: [SearchItem]) -> Coordinator {
-        // Temporary implementation
-        return DummyCoordinator(navigation: navigation)
+        let productListFactory = ProductListFactoryImp()
+        return ProductListCoordinator(navigation: navigation, factory: productListFactory, productList: productList)
     }
 }
