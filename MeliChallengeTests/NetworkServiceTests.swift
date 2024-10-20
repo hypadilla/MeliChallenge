@@ -25,7 +25,6 @@ class NetworkServiceTests: XCTestCase {
         super.tearDown()
     }
 
-    // Definimos un modelo de prueba genérico
     struct MockModel: Codable, Equatable {
         let id: String
         let name: String
@@ -33,14 +32,15 @@ class NetworkServiceTests: XCTestCase {
     }
 
     func testFetchData_Success() {
-        // Creamos datos simulados
+        // Arrange
         let mockObject = MockModel(id: "1", name: "Test", value: 42)
         let expectedData = try! JSONEncoder().encode(mockObject)
         mockAPIClient.result = .success(expectedData)
-
         let expectation = self.expectation(description: "FetchData Success")
 
+        // Act
         networkService.fetchData(from: "testEndpoint", method: .GET, headers: nil, body: nil) { (result: Result<MockModel, Error>) in
+            // Assert
             switch result {
             case .success(let response):
                 XCTAssertEqual(response, mockObject)
@@ -54,14 +54,15 @@ class NetworkServiceTests: XCTestCase {
     }
 
     func testFetchData_Failure() {
-        // Simulamos un error de red
+        // Arrange
         let nsError = NSError(domain: "TestErrorDomain", code: -1009, userInfo: nil)
         let expectedError = APIError.networkError(nsError)
         mockAPIClient.result = .failure(expectedError)
-
         let expectation = self.expectation(description: "FetchData Failure")
 
+        // Act
         networkService.fetchData(from: "testEndpoint", method: .GET, headers: nil, body: nil) { (result: Result<MockModel, Error>) in
+            // Assert
             switch result {
             case .success:
                 XCTFail("Se esperaba un error, pero se recibió éxito")
@@ -80,13 +81,14 @@ class NetworkServiceTests: XCTestCase {
     }
 
     func testFetchData_InvalidData() {
-        // Datos inválidos para probar el error de parsing
+        // Arrange
         let invalidData = "Invalid Data".data(using: .utf8)!
         mockAPIClient.result = .success(invalidData)
-
         let expectation = self.expectation(description: "FetchData Invalid Data")
 
+        // Act
         networkService.fetchData(from: "testEndpoint", method: .GET, headers: nil, body: nil) { (result: Result<MockModel, Error>) in
+            // Assert
             switch result {
             case .success:
                 XCTFail("Se esperaba un error de parsing, pero se recibió éxito")
