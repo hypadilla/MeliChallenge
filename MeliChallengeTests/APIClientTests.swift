@@ -29,16 +29,18 @@ class APIClientTests: XCTestCase {
     }
 
     func testRequest_Success() {
+        // Arrange
         let expectedData = "Test Data".data(using: .utf8)!
         MockURLProtocol.requestHandler = { request in
             XCTAssertEqual(request.url?.absoluteString, AppConstants.baseURL + "testEndpoint")
             let response = HTTPURLResponse(url: request.url!, statusCode: 200, httpVersion: nil, headerFields: nil)!
             return (response, expectedData)
         }
-
         let expectation = self.expectation(description: "Request Success")
 
+        // Act
         _ = apiClient.request(endpoint: "testEndpoint") { result in
+            // Assert
             switch result {
             case .success(let data):
                 XCTAssertEqual(data, expectedData)
@@ -52,14 +54,16 @@ class APIClientTests: XCTestCase {
     }
 
     func testRequest_Failure() {
+        // Arrange
         let expectedError = NSError(domain: "Test", code: -1, userInfo: nil)
         MockURLProtocol.requestHandler = { _ in
             throw expectedError
         }
-
         let expectation = self.expectation(description: "Request Failure")
 
+        // Act
         _ = apiClient.request(endpoint: "testEndpoint") { result in
+            // Assert
             switch result {
             case .success:
                 XCTFail("Se esperaba un error, pero se recibió éxito")
@@ -77,6 +81,4 @@ class APIClientTests: XCTestCase {
 
         waitForExpectations(timeout: 1, handler: nil)
     }
-
-
 }

@@ -11,12 +11,10 @@ class MockURLProtocol: URLProtocol {
     static var requestHandler: ((URLRequest) throws -> (HTTPURLResponse, Data?))?
 
     override class func canInit(with request: URLRequest) -> Bool {
-        // Interceptamos todas las solicitudes
         return true
     }
 
     override class func canonicalRequest(for request: URLRequest) -> URLRequest {
-        // Retornamos la solicitud sin modificaciones
         return request
     }
 
@@ -38,6 +36,6 @@ class MockURLProtocol: URLProtocol {
     }
 
     override func stopLoading() {
-        // No es necesario implementar
+        //TODO: Sin implementar intencionalmente
     }
 }

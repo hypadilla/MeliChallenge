@@ -25,21 +25,18 @@ class MockAPIClient: APIClientProtocol {
         retries: Int = AppConstants.maxRetries,
         completion: @escaping (Result<Data, Error>) -> Void
     ) -> URLSessionDataTask {
-        // Almacenamos los parámetros para posibles verificaciones
         lastEndpoint = endpoint
         lastMethod = method
         lastHeaders = headers
         lastBody = body
         requestCount += 1
 
-        // Retornamos el resultado simulado
         if let result = result {
             completion(result)
         } else {
             completion(.failure(APIError.unknown))
         }
 
-        // Retornamos una tarea vacía ya que no se usa en las pruebas
         return URLSessionDataTask()
     }
 }
