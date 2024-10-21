@@ -10,6 +10,7 @@ import UIKit
 protocol ProductListFactory {
     func makeModule(coordinator: ProductListControllerCoordinator, productList: [SearchItem]) -> UIViewController
     func makeCoordinatorProductDetail(navigation: UINavigationController, productId: String) -> ProductDetailCoordinator
+    func makeCoordinatorProductList(navigation: UINavigationController, productList: [SearchItem], paging: Paging, query: String) -> ProductListCoordinator
 }
 
 struct ProductListFactoryImp: ProductListFactory {
@@ -22,6 +23,14 @@ struct ProductListFactoryImp: ProductListFactory {
         )
         controller.title = "product_list".localized
         return controller
+    }
+    
+    func makeCoordinatorProductList(navigation: UINavigationController, productList: [SearchItem], paging: Paging, query: String) -> ProductListCoordinator {
+        let apiClient = APIClient.shared
+        let networkService = NetworkService(apiClient: apiClient)
+        let searchRepository = SearchRepositoryImp(networkService: networkService)
+        let loadSearchUseCase = LoadSearchUseCaseImp(repository: searchRepository)
+        return ProductListCoordinator(navigation: navigation, factory: self, productList: productList, query: query, paging: paging, loadSearchUseCase: loadSearchUseCase)
     }
     
     func makeCoordinatorProductDetail(navigation: UINavigationController, productId: String) -> ProductDetailCoordinator {

@@ -11,7 +11,7 @@ class APIClient: APIClientProtocol {
     static let shared = APIClient()
     
     var urlSession: URLSession
-
+    
     init(urlSession: URLSession = URLSession.shared) {
         self.urlSession = urlSession
     }

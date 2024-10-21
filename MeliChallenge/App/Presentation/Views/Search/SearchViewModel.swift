@@ -12,6 +12,9 @@ protocol SearchViewModel {
     var state: PassthroughSubject<StateController, Never> { get }
     var searchItemList: [SearchItem] { get }
     
+    var pagingInfo: Paging? { get }
+    var currentQuery: String { get }
+    
     func search(query: String)
     func loadMoreResults()
 }
@@ -21,9 +24,9 @@ final class SearchViewModelImp: SearchViewModel {
     
     private let loadSearchUseCase: LoadSearchUseCase
     private var searchItems: [SearchItem] = []
-    private var pagingInfo: Paging?
-    private var currentQuery: String = ""
-    private var isLoadingMore: Bool = false
+    private var pagingInfoInternal: Paging?
+    private var currentQueryInternal: String = ""
+    private var isLoading = false
     
     init(state: PassthroughSubject<StateController, Never>, loadSearchUseCase: LoadSearchUseCase) {
         self.loadSearchUseCase = loadSearchUseCase
@@ -34,19 +37,27 @@ final class SearchViewModelImp: SearchViewModel {
         return searchItems
     }
     
+    var pagingInfo: Paging? {
+        return pagingInfoInternal
+    }
+    
+    var currentQuery: String {
+        return currentQueryInternal
+    }
+    
     func search(query: String) {
         state.send(.loading)
-        currentQuery = query
+        currentQueryInternal = query
         searchItems = []
-        pagingInfo = nil
+        pagingInfoInternal = nil
         fetchResults(query: query, offset: 0)
     }
     
     func loadMoreResults() {
-        guard let paging = pagingInfo, !isLoadingMore else { return }
+        guard let paging = pagingInfoInternal, !isLoading else { return }
         if searchItems.count < paging.total {
-            isLoadingMore = true
-            fetchResults(query: currentQuery, offset: searchItems.count)
+            isLoading = true
+            fetchResults(query: currentQueryInternal, offset: searchItems.count)
         }
     }
     
@@ -56,12 +67,12 @@ final class SearchViewModelImp: SearchViewModel {
                 let limit = AppConstants.itemsPerPage
                 let (items, paging) = try await loadSearchUseCase.execute(query: query, offset: offset, limit: limit)
                 searchItems.append(contentsOf: items)
-                pagingInfo = paging
-                isLoadingMore = false
+                pagingInfoInternal = paging
+                isLoading = false
                 state.send(.success)
                 Logger.log("Success loading search results", level: .info)
             } catch {
-                isLoadingMore = false
+                isLoading = false
                 let errorMessage = "Error loading search results: \(error.localizedDescription)"
                 state.send(.fail(error: errorMessage))
                 Logger.log(errorMessage, level: .error)

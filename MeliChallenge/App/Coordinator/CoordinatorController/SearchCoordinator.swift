@@ -23,12 +23,12 @@ final class SearchCoordinator: Coordinator {
 }
 
 extension SearchCoordinator: SearchViewControllerCoordinator {
-    func didSearchList(model: [SearchItem]) {
-        goToProductList(model: model)
+    func didSearchList(model: [SearchItem], paging: Paging, query: String) {
+        goToProductList(model: model, paging: paging, query: query)
     }
     
-    private func goToProductList(model: [SearchItem]) {
-        let productListCoordinator = searchFactory.makeCoordinatorProductList(navigation: navigation, productList: model)
+    private func goToProductList(model: [SearchItem], paging: Paging, query: String) {
+        let productListCoordinator = searchFactory.makeCoordinatorProductList(navigation: navigation, productList: model, query: query, paging: paging)
         productListCoordinator.start()
     }
 }

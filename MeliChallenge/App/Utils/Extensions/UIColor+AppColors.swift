@@ -14,8 +14,6 @@ extension UIColor {
         }
         return color
     }
-
+    
     static let mainColor = UIColor.color(named: "mainColor")
-    static let secondaryColor = UIColor.color(named: "secondaryColor")
-    static let secondaryTextColor = UIColor.color(named: "secondaryTextColor")
 }
