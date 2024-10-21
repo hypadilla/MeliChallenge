@@ -19,7 +19,9 @@ final class ProductListItemViewCell: UICollectionViewCell {
     
     private let productImageView: UIImageView = {
         let imageView = UIImageView()
-        imageView.contentMode = .scaleToFill
+        imageView.contentMode = .scaleAspectFill
+        imageView.clipsToBounds = true
+        imageView.translatesAutoresizingMaskIntoConstraints = false
         return imageView
     }()
     
@@ -79,19 +81,14 @@ final class ProductListItemViewCell: UICollectionViewCell {
     
     func configure(with viewModel: SearchItem) {
         titleLabel.text = viewModel.title
-        if let formattedPrice = viewModel.price.formattedAsCurrency() {
-            priceLabel.text = formattedPrice
-        } else {
-            priceLabel.text = "$\(viewModel.price)"
-        }
-        if let url = URL(string: viewModel.thumbnail) {
-            
-        }
+        priceLabel.text = viewModel.price.formattedAsCurrency() ?? "$\(viewModel.price)"
+        
+        productImageView.loadImage(from: viewModel.thumbnail, placeholder: UIImage(named: "placeholder"))
     }
     
     override func prepareForReuse() {
         super.prepareForReuse()
-        productImageView.image = nil
+        productImageView.image = UIImage(named: "placeholder")
     }
 }
 

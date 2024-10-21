@@ -13,7 +13,7 @@ protocol LoadSearchUseCase {
 
 struct LoadSearchUseCaseImp: LoadSearchUseCase {
     let repository: SearchRepository
-
+    
     func execute(query: String, offset: Int, limit: Int) async throws -> (items: [SearchItem], paging: Paging) {
         return try await repository.fetchSearchData(query: query, offset: offset, limit: limit)
     }

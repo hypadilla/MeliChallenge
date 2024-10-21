@@ -9,7 +9,7 @@ import UIKit
 import Combine
 
 protocol ProductDetailControllerCoordinator : AnyObject{
-
+    
 }
 
 /// The view controller responsible for displaying the product detail screen.
@@ -57,7 +57,6 @@ final class ProductDetailController: UIViewController {
         }.store(in: &cancellable)
     }
     
-    //Crea el UIImageView, y las demas vistas
     private let imageView: UIImageView = {
         let imageView = UIImageView()
         imageView.contentMode = .scaleAspectFit
@@ -142,9 +141,7 @@ final class ProductDetailController: UIViewController {
             priceLabel.text = "$\(productDetail.price)"
         }
         conditionLabel.text = productDetail.condition
-        if let url = URL(string: productDetail.pictures[0].secure_url) {
-            //imageView.af.setImage(withURL: url)
-        }
+        imageView.loadImage(from: productDetail.pictures[0].secure_url, placeholder: UIImage(named: "placeholder"))
     }
 }
 

@@ -10,7 +10,7 @@ import Foundation
 
 class ProductDetailRepositoryImp: ProductDetailRepository {
     private let networkService: NetworkServiceProtocol
-
+    
     init(networkService: NetworkServiceProtocol) {
         self.networkService = networkService
     }

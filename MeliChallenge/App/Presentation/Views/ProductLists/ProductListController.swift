@@ -9,12 +9,15 @@ import UIKit
 
 protocol ProductListControllerCoordinator {
     func didSelectProductItem(productId: String)
+    func loadMoreProducts()
 }
 
 final class ProductListController: UICollectionViewController {
     
     private let coordinator: ProductListControllerCoordinator
     private var productList: [SearchItem] = []
+    
+    private var isLoadingMore = false
     
     init(collectionViewLayout: UICollectionViewLayout, coordinator: ProductListControllerCoordinator, productList: [SearchItem]) {
         self.coordinator = coordinator
@@ -65,5 +68,29 @@ extension ProductListController {
     override func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         let product = productList[indexPath.item]
         coordinator.didSelectProductItem(productId: product.id)
+    }
+}
+
+extension ProductListController {
+    override func scrollViewDidScroll(_ scrollView: UIScrollView) {
+        let threshold: CGFloat = 100.0
+        let contentHeight = scrollView.contentSize.height
+        let offsetY = scrollView.contentOffset.y
+        let height = scrollView.frame.size.height
+
+        if offsetY > contentHeight - height - threshold && !isLoadingMore {
+            isLoadingMore = true
+            coordinator.loadMoreProducts()
+        }
+    }
+    
+    func appendProducts(_ newProducts: [SearchItem]) {
+        let startIndex = productList.count
+        productList.append(contentsOf: newProducts)
+        let indexPaths = newProducts.enumerated().map { IndexPath(item: startIndex + $0.offset, section: 0) }
+        collectionView.performBatchUpdates({
+            collectionView.insertItems(at: indexPaths)
+        }, completion: nil)
+        isLoadingMore = false
     }
 }

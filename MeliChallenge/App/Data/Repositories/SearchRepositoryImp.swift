@@ -9,11 +9,11 @@ import Foundation
 
 class SearchRepositoryImp: SearchRepository {
     private let networkService: NetworkServiceProtocol
-
+    
     init(networkService: NetworkServiceProtocol) {
         self.networkService = networkService
     }
-
+    
     func fetchSearchData(query: String, offset: Int, limit: Int) async throws -> (items: [SearchItem], paging: Paging) {
         let endpoint = Endpoints.getProducts(query: query, offset: offset, limit: limit)
         return try await withCheckedThrowingContinuation { continuation in

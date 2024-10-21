@@ -9,7 +9,7 @@ import UIKit
 import Combine
 
 protocol SearchViewControllerCoordinator: AnyObject {
-    func didSearchList(model: [SearchItem])
+    func didSearchList(model: [SearchItem], paging: Paging, query: String)
 }
 
 final class SearchViewController: UIViewController {
@@ -62,8 +62,12 @@ final class SearchViewController: UIViewController {
                     Logger.log("no_results".localized, level: .info)
                     return
                 }
-                let model = self?.viewModel.searchItemList
-                self?.coordinator?.didSearchList(model: model ?? [])
+                let model = self?.viewModel.searchItemList ?? []
+                let paging = self?.viewModel.pagingInfo
+                let query = self?.viewModel.currentQuery ?? ""
+                if let paging = paging {
+                    self?.coordinator?.didSearchList(model: model, paging: paging, query: query)
+                }
                 Logger.log("success".localized, level: .info)
             case .loading:
                 self?.showSpinner()
