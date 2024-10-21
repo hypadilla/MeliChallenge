@@ -5,6 +5,8 @@
 //  Created by Harold Padilla on 20/10/24.
 //
 
+/// The `ProductDetailDTO` struct represents a data transfer object (DTO) for product details.
+/// It conforms to the `Decodable` protocol to support decoding from JSON data.
 struct ProductDetailDTO: Decodable {
     let id: String
     let title: String
@@ -12,6 +14,12 @@ struct ProductDetailDTO: Decodable {
     let condition: String
     let pictures: [PictureDTO]
     
+    /// Converts the `ProductDetailDTO` to a domain model `ProductDetail`.
+    ///
+    /// This function maps the DTO properties to the `ProductDetail` domain model,
+    /// including mapping the pictures array to domain objects.
+    ///
+    /// - Returns: A `ProductDetail` object.
     func toDomain() -> ProductDetail {
         return ProductDetail(
             id: id,

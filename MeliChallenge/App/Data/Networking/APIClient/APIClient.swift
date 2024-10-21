@@ -7,15 +7,31 @@
 
 import Foundation
 
+/// The `APIClient` class is responsible for making network requests to external APIs.
+/// It supports configuring HTTP methods, headers, request body, and retry logic.
+/// This class follows a singleton pattern to provide a shared instance for making API requests.
 class APIClient: APIClientProtocol {
     static let shared = APIClient()
-    
     var urlSession: URLSession
     
+    /// Initializes the `APIClient` with a specified or default `URLSession`.
+    ///
+    /// - Parameter urlSession: The `URLSession` to be used for making network requests. Defaults to `URLSession.shared`.
     init(urlSession: URLSession = URLSession.shared) {
         self.urlSession = urlSession
     }
     
+    /// Makes a network request to the given endpoint with the specified HTTP method, headers, body, and retry logic.
+    ///
+    /// - Parameters:
+    ///   - endpoint: The API endpoint to be appended to the base URL.
+    ///   - method: The HTTP method to be used for the request. Defaults to `.GET`.
+    ///   - headers: An optional dictionary of HTTP headers to include in the request.
+    ///   - body: An optional `Data` object representing the request body.
+    ///   - retries: The number of times the request should be retried in case of failure. Defaults to `AppConstants.maxRetries`.
+    ///   - completion: A closure that is called when the request completes, with a `Result` containing either the response `Data` or an `Error`.
+    ///
+    /// - Returns: The `URLSessionDataTask` that represents the ongoing request.
     @discardableResult
     func request(
         endpoint: String,

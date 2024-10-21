@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct Paging {
+struct Paging: Equatable {
     let total: Int
     let primaryResults: Int
     let offset: Int

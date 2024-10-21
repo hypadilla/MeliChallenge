@@ -6,7 +6,7 @@
 //
 
 /// Represents a picture entity.
-struct Picture: Decodable {
+struct Picture: Decodable, Equatable {
     /// The secure URL of the picture.
     let secure_url: String
 }

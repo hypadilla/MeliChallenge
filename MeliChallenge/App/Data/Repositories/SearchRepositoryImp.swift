@@ -22,8 +22,10 @@ class SearchRepositoryImp: SearchRepository {
                 case .success(let response):
                     let domainData = response.toDomain()
                     continuation.resume(returning: domainData)
-                case .failure(let error):
+                case .failure(let error as APIError):
                     continuation.resume(throwing: error)
+                case .failure(let error):
+                    continuation.resume(throwing: APIError.unknown)
                 }
             }
         }

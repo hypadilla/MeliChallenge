@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct SearchItem: Decodable {
+struct SearchItem: Decodable, Equatable {
     let id: String
     let title: String
     let price: Double
