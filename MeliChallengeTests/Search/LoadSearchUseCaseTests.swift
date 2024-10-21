@@ -27,7 +27,8 @@ class LoadSearchUseCaseTests: XCTestCase {
     func testExecuteSuccess() async {
         // Arrange
         let expectedItems = [SearchItem(id: "1", title: "Test Item", price: 100.0, thumbnail: "http://example.com/image.jpg")]
-        repositoryMock.result = .success(expectedItems)
+        let expectedPaging = Paging(total: 1, primaryResults: 1, offset: 0, limit: 50)
+        repositoryMock.result = .success((items: expectedItems, paging: expectedPaging))
 
         // Act
         do {
@@ -36,9 +37,9 @@ class LoadSearchUseCaseTests: XCTestCase {
             // Assert
             XCTAssertEqual(items.count, expectedItems.count)
             XCTAssertEqual(items.first?.title, expectedItems.first?.title)
-            XCTAssertEqual(paging.total, expectedItems.count)
-            XCTAssertEqual(paging.offset, 0)
-            XCTAssertEqual(paging.limit, 50)
+            XCTAssertEqual(paging.total, expectedPaging.total)
+            XCTAssertEqual(paging.offset, expectedPaging.offset)
+            XCTAssertEqual(paging.limit, expectedPaging.limit)
         } catch {
             XCTFail("Expected success but got error: \(error)")
         }
@@ -56,6 +57,7 @@ class LoadSearchUseCaseTests: XCTestCase {
         } catch {
             // Assert
             XCTAssertEqual((error as NSError).domain, expectedError.domain)
+            XCTAssertEqual((error as NSError).code, expectedError.code)
         }
     }
 }

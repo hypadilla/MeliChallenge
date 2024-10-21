@@ -6,7 +6,7 @@
 //
 
 /// Represents the detailed information of a product.
-struct ProductDetail: Decodable {
+struct ProductDetail: Decodable, Equatable {
     /// The unique identifier of the product.
     let id: String
     /// The title or name of the product.
