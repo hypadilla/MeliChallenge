@@ -97,13 +97,3 @@ vendor/bundle/
 # Build products
 build/
 DerivedData/
-
-# Xcode Shared data
-*.xccheckout
-*.xcscmblueprint
-
-# App Signing
-*.mobileprovision
-*.provisionprofile
-*.pbxproj
-*.xcworkspacedata
