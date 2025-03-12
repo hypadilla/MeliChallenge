@@ -35,4 +35,4 @@ Vamos a ser los usuarios de tu producto y vamos a usar la app que desarrolles. A
 - Experiencia del usuario.
 - Permisos del sistema operativo pedidos al usuario.
 
-Los endpoints necesarios los encontrarás en: [developers.mercadolibre.com.ar/es_ar/items-y-busquedas](developers.mercadolibre.com.ar/es_ar/items-y-busquedas) (Si bien hay endpoints que necesitan un TOKEN, no son necesarios para realizar este ejercicio).
+Los endpoints necesarios los encontrarás en: [developers.mercadolibre.com.ar/es_ar/items-y-busquedas](developers.mercadolibre.com.ar/es_ar/items-y-busquedas) (Si bien hay endpoints que necesitan un TOKEN, no son necesarios para realizar este ejercicio)
